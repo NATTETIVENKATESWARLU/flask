@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+    {{data}}
+    <h1>Data from the server:</h1>
+    <h2>{{data["name"]}}</h2>
+    <h3>Details:</h3>
+    {% for i,j in data.items() %}
+    {% if i == "name" %}
+
+        <p>{{ j }}</p>
+    {% else %}
+        <p>{{ i }}: {{ j }}</p>
+    {% endif %}
+    {% endfor %}
+
+{% endblock %}
+

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>this is database Form Submission</h1>
+<form method="post" action="">
+    {{ form.hidden_tag() }}
+    {{ form.username.label }}<br>
+    {{ form.username(size=32) }}<br>
+    {{ form.email.label }}<br>
+    {{ form.email(size=32) }}<br>
+    {{form.submit(class="btn btn-primary") }}
+</form>
+{% if qurey %}
+    {% for i in qurey %}
+        <h2>{{ i.username }}</h2>
+        <p>{{ i.email }}</p>
+    {% endfor %}
+{% endif %}
+{% endblock %}

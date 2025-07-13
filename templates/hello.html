@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+{% for message in get_flashed_messages() %}
+
+    <div class="alert alert-info">
+        {{ message }}
+    </div>
+{% endfor %}
+<h1>this is first web html page Hello, World!</h1>
+{% if name %}
+     <h1>this from data </h1>
+    <p>Hello, {{ name }}!</p>
+{% else %}
+    <p>Hello, Guest!</p>
+{% endif %}
+
+
+{% endblock %}
