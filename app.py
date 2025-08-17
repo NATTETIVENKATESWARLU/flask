@@ -137,19 +137,20 @@ class UserFormDB(FlaskForm):
 @app.route('/userform_db', methods=['GET', 'POST'])
 def user_form_db():
     form = UserFormDB()
-    qurey = User.query.all()  # Fetch all users from the database
+    query = User.query.all()  # Fetch all users from the database
+
     if form.validate_on_submit():
         # Check if email already exists
         existing_user = User.query.filter_by(email=form.email.data).first()
         if existing_user:
             flash('Email already exists. Please use a different email.', 'danger')
-            return render_template('userform_db.html', form=form)
+            return render_template('userform_db.html', form=form, query=query)
 
         # Check if username already exists (optional, if unique too)
         existing_username = User.query.filter_by(username=form.username.data).first()
         if existing_username:
             flash('Username already exists. Please choose a different username.', 'danger')
-            return render_template('userform_db.html', form=form)
+            return render_template('userform_db.html', form=form, query=query)
 
         # If both checks pass, add new user
         new_user = User(username=form.username.data, email=form.email.data)
@@ -157,11 +158,10 @@ def user_form_db():
         db.session.commit()
         flash('User created successfully!', 'success')
 
-        return redirect(url_for('hello_name', name=new_user.username,))
+        return redirect(url_for('hello_name', name=new_user.username))
 
-    return render_template('userform_db.html', form=form,  qurey= qurey)
-
+    return render_template('userform_db.html', form=form, query=query)
 
 
 if __name__ == '__main__':
-    app.run(debug=True,)
+    app.run(debug=True)

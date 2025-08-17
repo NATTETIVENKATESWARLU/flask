@@ -1,523 +1,373 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Advanced Modern Navbar</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyBrand Navigation</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <style>
+        .navbar-custom {
+            background: rgba(17, 24, 39, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(55, 65, 81, 0.3);
+        }
 
-  <!-- Bootstrap 5 CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <!-- Font Awesome for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+        .light-mode .navbar-custom {
+            background: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid rgba(229, 231, 235, 0.8);
+        }
 
-  <style>
-    :root {
-      --primary-color: #0dcaf0;
-      --dark-bg: linear-gradient(135deg, #111 0%, #222 100%);
-      --light-bg: #ffffff;
-      --dark-text: #f8f9fa;
-      --light-text: #212529;
-      --transition-speed: 0.4s;
-      --nav-height: 70px;
-      --shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
+        .nav-link-hover {
+            position: relative;
+            transition: all 0.3s ease;
+        }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+        .nav-link-hover::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            background: linear-gradient(90deg, #3b82f6, #06b6d4);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
 
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      transition: all var(--transition-speed) ease;
-      min-height: 100vh;
-    }
+        .nav-link-hover:hover::after {
+            width: 100%;
+        }
 
-    /* Dark mode as default */
-    body {
-      background-color: #121212;
-      color: #e0e0e0;
-    }
+        .search-container {
+            position: relative;
+        }
 
-    /* Navbar styles */
-    .navbar-custom {
-      background: var(--dark-bg);
-      height: var(--nav-height);
-      box-shadow: var(--shadow);
-      padding: 0 1rem;
-      position: sticky;
-      top: 0;
-      z-index: 1030;
-      transition: all var(--transition-speed) ease;
-    }
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+            z-index: 10;
+        }
 
-    .navbar-brand {
-      color: var(--dark-text) !important;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      font-size: 1.5rem;
-      display: flex;
-      align-items: center;
-      transition: all var(--transition-speed) ease;
-      position: relative;
-      padding: 0.5rem 0;
-    }
+        .search-input {
+            padding-left: 2.5rem;
+            background: rgba(55, 65, 81, 0.5);
+            border: 1px solid rgba(75, 85, 99, 0.5);
+            transition: all 0.3s ease;
+        }
 
-    .navbar-brand:hover {
-      color: var(--primary-color) !important;
-    }
+        .search-input:focus {
+            background: rgba(55, 65, 81, 0.8);
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
 
-    .navbar-brand::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 3px;
-      background: var(--primary-color);
-      transition: width var(--transition-speed) ease;
-    }
+        .light-mode .search-input {
+            background: rgba(243, 244, 246, 0.8);
+            border-color: rgba(209, 213, 219, 0.8);
+            color: #374151;
+        }
 
-    .navbar-brand:hover::after {
-      width: 100%;
-    }
+        .light-mode .search-input:focus {
+            background: rgba(243, 244, 246, 1);
+            border-color: #3b82f6;
+        }
 
-    .nav-link {
-      color: #adb5bd !important;
-      margin: 0 8px;
-      border-radius: 6px;
-      padding: 0.5rem 1rem !important;
-      font-weight: 500;
-      position: relative;
-      transition: all var(--transition-speed) ease;
-      display: flex;
-      align-items: center;
-    }
+        .theme-toggle {
+            background: linear-gradient(45deg, #3b82f6, #06b6d4);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
 
-    .nav-link i {
-      margin-right: 8px;
-      font-size: 0.9rem;
-    }
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
 
-    .nav-link:hover {
-      color: #ffffff !important;
-      background: rgba(13, 202, 240, 0.1);
-      transform: translateY(-2px);
-    }
+        .hero-section {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(6, 182, 212, 0.1));
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
 
-    .nav-link::before {
-      content: '';
-      position: absolute;
-      bottom: -5px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 0;
-      height: 2px;
-      background: var(--primary-color);
-      transition: width var(--transition-speed) ease;
-    }
+        .light-mode .hero-section {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(6, 182, 212, 0.05));
+        }
 
-    .nav-link:hover::before {
-      width: 70%;
-    }
+        .btn-gradient {
+            background: linear-gradient(45deg, #3b82f6, #06b6d4);
+            border: none;
+            transition: all 0.3s ease;
+        }
 
-    .nav-link.active {
-      color: #fff !important;
-      background: var(--primary-color);
-      box-shadow: 0 4px 8px rgba(13, 202, 240, 0.3);
-    }
+        .btn-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+        }
 
-    .nav-link.active::before {
-      display: none;
-    }
+        .mobile-menu {
+            display: none;
+        }
 
-    /* Dropdown styles */
-    .dropdown-menu {
-      background: #2c2c2c;
-      border: none;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      margin-top: 8px !important;
-      transition: all 0.3s ease;
-      opacity: 0;
-      display: block;
-      visibility: hidden;
-      transform: translateY(10px);
-    }
+        .mobile-menu.active {
+            display: block;
+        }
 
-    .dropdown:hover .dropdown-menu {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-    }
+        @media (max-width: 768px) {
+            .desktop-nav {
+                display: none;
+            }
+        }
 
-    .dropdown-item {
-      color: #ced4da;
-      padding: 0.75rem 1.5rem;
-      transition: all var(--transition-speed) ease;
-      position: relative;
-    }
+        .light-mode {
+            background-color: #f9fafb !important;
+            color: #374151 !important;
+        }
 
-    .dropdown-item:hover {
-      background: #3a3a3a;
-      color: #ffffff;
-      padding-left: 2rem;
-    }
+        .light-mode .text-white {
+            color: #374151 !important;
+        }
 
-    .dropdown-item::before {
-      content: '';
-      position: absolute;
-      left: 1rem;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 6px;
-      height: 6px;
-      background: var(--primary-color);
-      border-radius: 50%;
-      opacity: 0;
-      transition: all var(--transition-speed) ease;
-    }
-
-    .dropdown-item:hover::before {
-      opacity: 1;
-    }
-
-    .dropdown-divider {
-      border-color: #3a3a3a;
-    }
-
-    /* Search form styles */
-    .search-form {
-      position: relative;
-      margin-right: 1rem;
-    }
-
-    .form-control-dark {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: #fff;
-      padding: 0.5rem 1rem 0.5rem 2.5rem;
-      border-radius: 50px;
-      transition: all var(--transition-speed) ease;
-      width: 200px;
-    }
-
-    .form-control-dark:focus {
-      width: 250px;
-      background: rgba(255, 255, 255, 0.15);
-      border-color: var(--primary-color);
-      box-shadow: 0 0 0 0.25rem rgba(13, 202, 240, 0.25);
-    }
-
-    .form-control-dark::placeholder {
-      color: rgba(255, 255, 255, 0.6);
-    }
-
-    .search-icon {
-      position: absolute;
-      left: 1rem;
-      top: 50%;
-      transform: translateY(-50%);
-      color: rgba(255, 255, 255, 0.6);
-      pointer-events: none;
-    }
-
-    .btn-outline-light-custom {
-      color: #f8f9fa;
-      border-color: rgba(255, 255, 255, 0.2);
-      border-radius: 50px;
-      padding: 0.5rem 1.5rem;
-      transition: all var(--transition-speed) ease;
-      position: relative;
-      overflow: hidden;
-      z-index: 1;
-    }
-
-    .btn-outline-light-custom:hover {
-      color: #121212;
-      border-color: var(--primary-color);
-    }
-
-    .btn-outline-light-custom::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 0;
-      height: 100%;
-      background: var(--primary-color);
-      transition: width var(--transition-speed) ease;
-      z-index: -1;
-    }
-
-    .btn-outline-light-custom:hover::before {
-      width: 100%;
-    }
-
-    /* Dark mode toggle */
-    #darkModeToggle {
-      margin-left: 10px;
-      background: transparent;
-      border: none;
-      color: #f8f9fa;
-      font-size: 1.2rem;
-      cursor: pointer;
-      transition: all var(--transition-speed) ease;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-    }
-
-    #darkModeToggle:hover {
-      background: rgba(255, 255, 255, 0.1);
-      transform: rotate(30deg);
-    }
-
-    /* Light mode styles */
-    body.light-mode {
-      background: #f5f5f5;
-      color: #333;
-    }
-
-    body.light-mode .navbar-custom {
-      background: var(--light-bg);
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    body.light-mode .nav-link {
-      color: #495057 !important;
-    }
-
-    body.light-mode .nav-link:hover {
-      color: var(--primary-color) !important;
-      background: rgba(13, 202, 240, 0.1);
-    }
-
-    body.light-mode .dropdown-menu {
-      background: var(--light-bg);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    body.light-mode .dropdown-item {
-      color: #495057;
-    }
-
-    body.light-mode .dropdown-item:hover {
-      background: #f8f9fa;
-      color: var(--primary-color);
-    }
-
-    body.light-mode .form-control-dark {
-      background: rgba(0, 0, 0, 0.05);
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      color: #495057;
-    }
-
-    body.light-mode .form-control-dark::placeholder {
-      color: #6c757d;
-    }
-
-    body.light-mode .search-icon {
-      color: #6c757d;
-    }
-
-    body.light-mode .btn-outline-light-custom {
-      color: #495057;
-      border-color: rgba(0, 0, 0, 0.1);
-    }
-
-    body.light-mode .btn-outline-light-custom:hover {
-      color: #fff;
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 992px) {
-      .navbar-collapse {
-        background: #2c2c2c;
-        padding: 1rem;
-        border-radius: 8px;
-        margin-top: 10px;
-        box-shadow: var(--shadow);
-      }
-
-      body.light-mode .navbar-collapse {
-        background: var(--light-bg);
-      }
-
-      .dropdown-menu {
-        margin-left: 1rem;
-        width: calc(100% - 2rem);
-      }
-
-      .search-form {
-        margin: 1rem 0;
-        width: 100%;
-      }
-
-      .form-control-dark {
-        width: 100%;
-      }
-
-      .form-control-dark:focus {
-        width: 100%;
-      }
-    }
-
-    /* Animation for navbar items */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .navbar-nav .nav-item {
-      animation: fadeIn 0.5s ease forwards;
-      opacity: 0;
-    }
-
-    .navbar-nav .nav-item:nth-child(1) { animation-delay: 0.1s; }
-    .navbar-nav .nav-item:nth-child(2) { animation-delay: 0.2s; }
-    .navbar-nav .nav-item:nth-child(3) { animation-delay: 0.3s; }
-    .navbar-nav .nav-item:nth-child(4) { animation-delay: 0.4s; }
-    .navbar-nav .nav-item:nth-child(5) { animation-delay: 0.5s; }
-  </style>
+        .light-mode .text-gray-300 {
+            color: #6b7280 !important;
+        }
+    </style>
 </head>
-<body class="bg-dark text-light">
+<body class="bg-gray-900 text-white min-h-screen transition-all duration-300">
+    <!-- Navigation -->
+    <nav class="navbar-custom fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="#" class="flex items-center space-x-2 text-xl font-bold text-white">
+                        <i class="fas fa-rocket text-blue-400"></i>
+                        <span>MyBrand</span>
+                    </a>
+                </div>
 
-<nav class="navbar navbar-expand-lg navbar-custom sticky-top">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="{{ url_for('index') }}">
-      <i class="fas fa-rocket me-2"></i>MyBrand
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+                <!-- Desktop Navigation -->
+                <div class="hidden md:block desktop-nav">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="{{ url_for('hello') }}" class="nav-link-hover px-3 py-2 text-sm font-medium text-white hover:text-blue-400">
+                            <i class="fas fa-star mr-2"></i>Home
+                        </a>
+                        <a href="{{ url_for('mydata') }}" class="nav-link-hover px-3 py-2 text-sm font-medium text-gray-300 hover:text-blue-400">
+                            <i class="fas fa-star mr-2"></i>Username
+                        </a>
+                        <a href="{{ url_for('form_class_example') }}" class="nav-link-hover px-3 py-2 text-sm font-medium text-gray-300 hover:text-blue-400">
+                            <i class="fas fa-database mr-2"></i>form_class_example
+                        </a>
+                        <a href="{{ url_for('user_form_db') }}" class="nav-link-hover px-3 py-2 text-sm font-medium text-gray-300 hover:text-blue-400">
+                            <i class="fas fa-wpforms mr-2"></i>user_form_db_add
+                        </a>
+                        <a href="#" class="nav-link-hover px-3 py-2 text-sm font-medium text-gray-300 hover:text-blue-400">
+                            <i class="fas fa-cogs mr-2"></i>Services
+                        </a>
+                    </div>
+                </div>
 
-    <div class="collapse navbar-collapse" id="mainNav">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{{ url_for('index') }}">
-            <i class="fas fa-home"></i> Home
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('hello') }}">
-            <i class="fas fa-star"></i> username
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('mydata') }}">
-            <i class="fas fa-info-circle"></i> mydata
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('user_form_db') }}">
-            <i class="fas fa-info-circle"></i> dbform
-          </a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fas fa-cogs"></i> Services
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="servicesDropdown">
-            <li><a class="dropdown-item" href="{{ url_for('form_class_example') }}"><i class="fas fa-paint-brush me-2"></i>Web Design</a></li>
-            <li><a class="dropdown-item" href="#"><i class="fas fa-search me-2"></i>SEO</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#"><i class="fas fa-headset me-2"></i>Support</a></li>
-          </ul>
-        </li>
-      </ul>
+                <!-- Right Section -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <!-- Search -->
+                    <div class="search-container relative">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" placeholder="Search..."
+                               class="search-input w-64 px-4 py-2 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
 
-      <div class="d-flex align-items-center">
-        <form class="d-flex search-form" role="search">
-          <i class="fas fa-search search-icon"></i>
-          <input class="form-control form-control-dark" type="search" placeholder="Search..." aria-label="Search" />
-        </form>
+                    <!-- Login Button -->
+                    <button class="px-4 py-2 text-sm font-medium text-blue-400 border border-blue-400 rounded-lg hover:bg-blue-400 hover:text-white transition-all duration-300">
+                        <i class="fas fa-sign-in-alt mr-2"></i>Login
+                    </button>
 
-        <button class="btn btn-outline-light-custom me-2">
-          <i class="fas fa-sign-in-alt me-1"></i> Login
-        </button>
+                    <!-- Theme Toggle -->
+                    <button class="theme-toggle" id="themeToggle">
+                        🌙
+                    </button>
+                </div>
 
-        <!-- Dark/Light Toggle -->
-        <button class="btn" id="darkModeToggle">🌙</button>
-      </div>
-    </div>
-  </div>
-</nav>
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button class="mobile-menu-btn p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none" id="mobileMenuBtn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
 
-<!-- Main content placeholder -->
-<main class="container py-5">
-  <div class="p-5 mb-4 rounded-3" style="background: rgba(13, 202, 240, 0.1);">
-    <div class="container-fluid py-5">
-      <h1 class="display-5 fw-bold">Welcome to MyBrand</h1>
-      <p class="col-md-8 fs-4">This is an advanced navigation bar with smooth animations and transitions.</p>
-      <button class="btn btn-primary btn-lg" type="button">Get Started</button>
-    </div>
-  </div>
-</main>
+        <!-- Mobile Navigation Menu -->
+        <div class="mobile-menu bg-gray-800 md:hidden" id="mobileMenu">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="#" class="block px-3 py-2 text-base font-medium text-white bg-gray-900 rounded-md">
+                    <i class="fas fa-home mr-2"></i>Home
+                </a>
+                <a href="#" class="block px-3 py-2 text-base font-medium text-gray-300 rounded-md hover:text-white hover:bg-gray-700">
+                    <i class="fas fa-star mr-2"></i>Username
+                </a>
+                <a href="#" class="block px-3 py-2 text-base font-medium text-gray-300 rounded-md hover:text-white hover:bg-gray-700">
+                    <i class="fas fa-database mr-2"></i>My Data
+                </a>
+                <a href="#" class="block px-3 py-2 text-base font-medium text-gray-300 rounded-md hover:text-white hover:bg-gray-700">
+                    <i class="fas fa-wpforms mr-2"></i>DB Form
+                </a>
+                <a href="#" class="block px-3 py-2 text-base font-medium text-gray-300 rounded-md hover:text-white hover:bg-gray-700">
+                    <i class="fas fa-cogs mr-2"></i>Services
+                </a>
+            </div>
+            <div class="pt-4 pb-3 border-t border-gray-700">
+                <div class="px-2 space-y-1">
+                    <button class="w-full text-left px-3 py-2 text-base font-medium text-blue-400 border border-blue-400 rounded-lg hover:bg-blue-400 hover:text-white transition-all duration-300">
+                        <i class="fas fa-sign-in-alt mr-2"></i>Login
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-<!-- Bootstrap JS Bundle with Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Main Content -->
+    <main class="pt-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <!-- Hero Section -->
+            <div class="hero-section rounded-2xl p-8 md:p-12 mb-8">
+                <div class="text-center">
+                    <h1 class="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+                        Welcome to MyBrand
+                    </h1>
+                    <p class="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
+                        This is an advanced navigation bar with smooth animations, responsive design, and modern theme switching capabilities.
+                    </p>
+                    <button class="btn-gradient px-8 py-4 text-lg font-semibold text-white rounded-lg">
+                        <i class="fas fa-rocket mr-2"></i>Get Started
+                    </button>
+                </div>
+            </div>
 
-<script>
-  // Enhanced dark mode toggle
-  const toggleBtn = document.getElementById('darkModeToggle');
-  const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+            <!-- Feature Cards -->
+            <div class="grid md:grid-cols-3 gap-6 mb-12">
+                <div class="bg-gray-800 rounded-lg p-6 hover:bg-gray-700 transition-all duration-300 hover:transform hover:scale-105">
+                    <div class="text-blue-400 text-3xl mb-4">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Responsive Design</h3>
+                    <p class="text-gray-400">Perfectly optimized for all devices, from mobile to desktop.</p>
+                </div>
 
-  // Check for saved preference or system preference
-  const currentTheme = localStorage.getItem('theme') ||
-                      (prefersDarkScheme.matches ? 'dark' : 'light');
+                <div class="bg-gray-800 rounded-lg p-6 hover:bg-gray-700 transition-all duration-300 hover:transform hover:scale-105">
+                    <div class="text-cyan-400 text-3xl mb-4">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Theme Toggle</h3>
+                    <p class="text-gray-400">Switch between dark and light modes with smooth transitions.</p>
+                </div>
 
-  if (currentTheme === 'light') {
-    document.body.classList.add('light-mode');
-    toggleBtn.textContent = '☀️';
-  }
+                <div class="bg-gray-800 rounded-lg p-6 hover:bg-gray-700 transition-all duration-300 hover:transform hover:scale-105">
+                    <div class="text-green-400 text-3xl mb-4">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Smart Search</h3>
+                    <p class="text-gray-400">Integrated search functionality with elegant styling.</p>
+                </div>
+            </div>
+        </div>
+    </main>
 
-  // Toggle function
-  toggleBtn.addEventListener('click', () => {
-    const isLight = document.body.classList.toggle('light-mode');
-    toggleBtn.textContent = isLight ? '☀️' : '🌙';
-    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
 
-    // Add animation to toggle button
-    toggleBtn.style.transform = 'rotate(180deg)';
-    setTimeout(() => {
-      toggleBtn.style.transform = 'rotate(0)';
-    }, 300);
-  });
+        // Check for saved preference or system preference
+        const currentTheme = localStorage.getItem('theme') ||
+                            (prefersDarkScheme.matches ? 'dark' : 'light');
 
-  // Initialize dropdown hover effect for desktop
-  const dropdowns = document.querySelectorAll('.dropdown');
-  dropdowns.forEach(dropdown => {
-    dropdown.addEventListener('mouseenter', () => {
-      if (window.innerWidth > 992) {
-        const dropdownMenu = dropdown.querySelector('.dropdown-menu');
-        dropdownMenu.classList.add('show');
-      }
-    });
+        if (currentTheme === 'light') {
+            document.body.classList.add('light-mode');
+            themeToggle.textContent = '☀️';
+        }
 
-    dropdown.addEventListener('mouseleave', () => {
-      if (window.innerWidth > 992) {
-        const dropdownMenu = dropdown.querySelector('.dropdown-menu');
-        dropdownMenu.classList.remove('show');
-      }
-    });
-  });
+        // Toggle function
+        themeToggle.addEventListener('click', () => {
+            const isLight = document.body.classList.toggle('light-mode');
+            themeToggle.textContent = isLight ? '☀️' : '🌙';
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
 
-  // Smooth scroll for anchor links
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-      e.preventDefault();
-      document.querySelector(this.getAttribute('href')).scrollIntoView({
-        behavior: 'smooth'
-      });
-    });
-  });
-</script>
+            // Add rotation animation
+            themeToggle.style.transform = 'rotate(180deg)';
+            setTimeout(() => {
+                themeToggle.style.transform = 'rotate(0deg)';
+            }, 300);
+        });
 
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+            const icon = mobileMenuBtn.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Search functionality
+        const searchInput = document.querySelector('.search-input');
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('ring-2', 'ring-blue-500');
+        });
+
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('ring-2', 'ring-blue-500');
+        });
+
+        // Add scroll effect to navbar
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar-custom');
+            if (window.scrollY > 10) {
+                navbar.style.backdropFilter = 'blur(20px)';
+                navbar.style.background = document.body.classList.contains('light-mode')
+                    ? 'rgba(255, 255, 255, 0.98)'
+                    : 'rgba(17, 24, 39, 0.98)';
+            } else {
+                navbar.style.backdropFilter = 'blur(10px)';
+                navbar.style.background = document.body.classList.contains('light-mode')
+                    ? 'rgba(255, 255, 255, 0.95)'
+                    : 'rgba(17, 24, 39, 0.95)';
+            }
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!mobileMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                mobileMenu.classList.remove('active');
+                const icon = mobileMenuBtn.querySelector('i');
+                icon.classList.add('fa-bars');
+                icon.classList.remove('fa-times');
+            }
+        });
+    </script>
 </body>
 </html>
